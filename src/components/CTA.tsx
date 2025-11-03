@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const CTA = () => {
   return (
@@ -15,9 +16,11 @@ export const CTA = () => {
             Join teams who trust Fetchbot to keep their applications secure with continuous ethical hacking.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Button size="lg" className="group bg-primary text-primary-foreground hover:bg-primary/90 glow-cyan">
-              Start Free Trial
-              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            <Button size="lg" className="group bg-primary text-primary-foreground hover:bg-primary/90" asChild>
+              <Link to="/dashboard">
+                Go to Dashboard
+                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </Button>
             <Button size="lg" variant="outline" className="border-primary/20 hover:bg-secondary">
               Schedule Demo
