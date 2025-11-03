@@ -1,6 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Brain, Terminal, GitBranch, CheckCircle2, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Brain, Terminal, GitBranch, CheckCircle2, AlertCircle, StopCircle, Send } from "lucide-react";
+import { useState } from "react";
 
 interface LogEntry {
   id: number;
@@ -103,13 +106,35 @@ const getIconAndColor = (type: string) => {
 };
 
 export function ExecutionLog() {
+  const [isRunning, setIsRunning] = useState(true);
+  const [question, setQuestion] = useState("");
+
+  const handleStop = () => {
+    setIsRunning(false);
+  };
+
+  const handleAskQuestion = () => {
+    if (question.trim()) {
+      console.log("Question asked:", question);
+      setQuestion("");
+    }
+  };
+
   return (
     <Card className="h-full flex flex-col">
       <CardHeader className="border-b border-border">
-        <CardTitle className="flex items-center gap-2">
-          <Terminal className="h-5 w-5" />
-          AI Execution Log
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-2">
+            <Terminal className="h-5 w-5" />
+            AI Execution Log
+          </CardTitle>
+          {isRunning && (
+            <Button onClick={handleStop} variant="destructive" size="sm">
+              <StopCircle className="h-4 w-4 mr-2" />
+              Stop Execution
+            </Button>
+          )}
+        </div>
       </CardHeader>
       <CardContent className="flex-1 p-0">
         <ScrollArea className="h-[calc(100vh-12rem)]">
@@ -140,12 +165,28 @@ export function ExecutionLog() {
                 </div>
               );
             })}
-            <div className="flex items-center gap-2 text-muted-foreground animate-pulse">
-              <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-              <span className="text-xs">Scan in progress...</span>
-            </div>
+            {isRunning && (
+              <div className="flex items-center gap-2 text-muted-foreground animate-pulse">
+                <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                <span className="text-xs">Scan in progress...</span>
+              </div>
+            )}
           </div>
         </ScrollArea>
+        <div className="p-4 border-t border-border">
+          <div className="flex gap-2">
+            <Input
+              placeholder="Ask AI a question about the scan..."
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleAskQuestion()}
+              className="flex-1"
+            />
+            <Button onClick={handleAskQuestion} size="icon" disabled={!question.trim()}>
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
