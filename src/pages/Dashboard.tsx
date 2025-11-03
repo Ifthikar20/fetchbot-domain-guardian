@@ -1,6 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity, Shield, Target, AlertTriangle } from "lucide-react";
+import { Activity, Shield, Target, AlertTriangle, Github, Copy } from "lucide-react";
 import { ExecutionLog } from "@/components/dashboard/ExecutionLog";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const stats = [
   { title: "Active Targets", value: "12", icon: Target, color: "text-blue-500" },
@@ -10,11 +13,55 @@ const stats = [
 ];
 
 export default function Dashboard() {
+  const [isGithubConnected, setIsGithubConnected] = useState(false);
+  const { toast } = useToast();
+  const attackApiIp = "203.0.113.42";
+
+  const handleGithubConnect = () => {
+    setIsGithubConnected(true);
+    toast({
+      title: "GitHub Connected",
+      description: "Repository scanning enabled",
+    });
+  };
+
+  const copyIpToClipboard = () => {
+    navigator.clipboard.writeText(attackApiIp);
+    toast({
+      title: "IP Copied",
+      description: "Attack API IP copied to clipboard",
+    });
+  };
+
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-        <p className="text-muted-foreground">Overview of your security testing operations</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+          <p className="text-muted-foreground">Overview of your security testing operations</p>
+        </div>
+        <div className="flex flex-col gap-2">
+          <Button 
+            onClick={handleGithubConnect}
+            variant={isGithubConnected ? "secondary" : "default"}
+            className="gap-2"
+          >
+            <Github className="h-4 w-4" />
+            {isGithubConnected ? "GitHub Connected" : "Connect GitHub"}
+          </Button>
+          <div className="flex items-center gap-2 text-sm bg-muted px-3 py-2 rounded-md">
+            <span className="text-muted-foreground">Attack API:</span>
+            <code className="font-mono">{attackApiIp}</code>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-6 w-6"
+              onClick={copyIpToClipboard}
+            >
+              <Copy className="h-3 w-3" />
+            </Button>
+          </div>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

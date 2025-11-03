@@ -121,8 +121,8 @@ export function ExecutionLog() {
   };
 
   return (
-    <Card className="h-full flex flex-col">
-      <CardHeader className="border-b border-border">
+    <Card className="flex flex-col h-[600px]">
+      <CardHeader className="border-b border-border flex-shrink-0">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <Terminal className="h-5 w-5" />
@@ -136,8 +136,8 @@ export function ExecutionLog() {
           )}
         </div>
       </CardHeader>
-      <CardContent className="flex-1 p-0">
-        <ScrollArea className="h-[calc(100vh-12rem)]">
+      <CardContent className="flex-1 p-0 overflow-hidden flex flex-col">
+        <ScrollArea className="flex-1">
           <div className="p-4 space-y-3 font-mono text-sm">
             {mockLogs.map((log) => {
               const { icon: Icon, color, bg } = getIconAndColor(log.type);
@@ -173,7 +173,7 @@ export function ExecutionLog() {
             )}
           </div>
         </ScrollArea>
-        <div className="p-4 border-t border-border">
+        <div className="p-4 border-t border-border flex-shrink-0">
           <div className="flex gap-2">
             <Input
               placeholder="Ask AI a question about the scan..."
