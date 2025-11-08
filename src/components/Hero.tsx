@@ -22,22 +22,21 @@ export const Hero = () => {
       <div className="container relative z-10 px-4 py-20">
         <div className="mx-auto max-w-5xl text-center space-y-8">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-effect animate-fade-in">
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">AI-Powered Security Testing</span>
+          <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-effect border border-primary/20 animate-fade-in">
+            <Shield className="w-4 h-4 text-primary" />
+            <span className="text-sm font-semibold text-foreground">Enterprise Security Testing Platform</span>
           </div>
           
           {/* Headline */}
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight animate-fade-in" style={{ animationDelay: '0.1s' }}>
-            Your{" "}
-            <span className="gradient-text">Autonomous Ethical Hacker</span>
-            {" "}Testing 24/7
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight animate-fade-in leading-tight" style={{ animationDelay: '0.1s' }}>
+            Proactive Cyber Defense
+            <br />
+            <span className="gradient-text">For Modern Enterprises</span>
           </h1>
           
           {/* Subheadline */}
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            Fetchbot continuously probes your applications like a seasoned security expert. 
-            Discover vulnerabilities before they become breaches.
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto animate-fade-in leading-relaxed" style={{ animationDelay: '0.2s' }}>
+            Continuous automated penetration testing that identifies and neutralizes vulnerabilities before they become breaches. Trusted by Fortune 500 companies.
           </p>
           
           {/* CTA Buttons */}
@@ -83,19 +82,19 @@ export const Hero = () => {
             </div>
           </div>
           
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-8 pt-16 max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: '0.5s' }}>
+          {/* Trust indicators */}
+          <div className="grid grid-cols-3 gap-8 pt-16 max-w-4xl mx-auto animate-fade-in" style={{ animationDelay: '0.5s' }}>
             <div>
-              <div className="text-3xl font-bold gradient-text">99.9%</div>
-              <div className="text-sm text-muted-foreground">Uptime</div>
+              <div className="text-3xl md:text-4xl font-bold gradient-text">10M+</div>
+              <div className="text-sm text-muted-foreground">Vulnerabilities Found</div>
             </div>
             <div>
-              <div className="text-3xl font-bold gradient-text">1M+</div>
-              <div className="text-sm text-muted-foreground">Tests Run</div>
+              <div className="text-3xl md:text-4xl font-bold gradient-text">500+</div>
+              <div className="text-sm text-muted-foreground">Enterprise Clients</div>
             </div>
             <div>
-              <div className="text-3xl font-bold gradient-text">24/7</div>
-              <div className="text-sm text-muted-foreground">Monitoring</div>
+              <div className="text-3xl md:text-4xl font-bold gradient-text">99.9%</div>
+              <div className="text-sm text-muted-foreground">Detection Accuracy</div>
             </div>
           </div>
         </div>
