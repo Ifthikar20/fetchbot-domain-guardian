@@ -27,11 +27,12 @@ export const CTA = () => {
               </div>
               
               <h2 className="text-4xl md:text-6xl font-bold">
-                Ready to <span className="gradient-text">Secure</span> Your Apps?
+                Ready to <span className="gradient-text">Secure</span> Your Digital Assets?
               </h2>
               
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Join teams who trust Fetchbot to keep their applications secure with continuous ethical hacking.
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                Join hundreds of companies protecting their applications with automated security testing. 
+                Start your free trial today—no credit card required.
               </p>
               
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">

@@ -63,14 +63,14 @@ export const Features = () => {
           {features.map((feature, index) => (
             <Card 
               key={index}
-              className="group p-6 bg-card/50 backdrop-blur border-border hover:border-primary/30 transition-all duration-300 relative overflow-hidden hover-scale"
+              className="group p-6 bg-card/50 backdrop-blur border-border/50 hover:border-primary/30 transition-all duration-300 relative overflow-hidden hover-scale"
             >
               {/* Gradient background on hover */}
               <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
               
               <div className="relative z-10">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <feature.icon className="w-6 h-6 text-primary" />
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <feature.icon className="w-7 h-7 text-primary" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
                 <p className="text-muted-foreground">{feature.description}</p>
