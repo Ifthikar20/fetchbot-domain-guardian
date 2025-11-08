@@ -8,6 +8,57 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
+    /* Light mode colors */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 95%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 220 15% 95%;
+    --muted-foreground: 220 10% 40%;
+
+    --accent: 266 85% 65%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 90%;
+    --input: 220 15% 90%;
+    --ring: 217 91% 60%;
+
+    --radius: 1rem;
+
+    --gradient-subtle: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(220, 15%, 98%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(217, 91%, 60%) 0%, hsl(266, 85%, 65%) 100%);
+    --gradient-mesh: radial-gradient(at 0% 0%, hsl(217, 91%, 85%) 0px, transparent 50%),
+                     radial-gradient(at 100% 0%, hsl(266, 85%, 85%) 0px, transparent 50%),
+                     radial-gradient(at 100% 100%, hsl(266, 85%, 85%) 0px, transparent 50%),
+                     radial-gradient(at 0% 100%, hsl(217, 91%, 85%) 0px, transparent 50%);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 15% 93%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 220 15% 90%;
+    --sidebar-ring: 217 91% 60%;
+  }
+
+  .dark {
+    /* Dark mode colors */
     --background: 224 20% 6%;
     --foreground: 210 15% 96%;
 
@@ -36,15 +87,12 @@ All colors MUST be HSL.
     --input: 224 15% 18%;
     --ring: 210 85% 45%;
 
-    --radius: 1rem;
-
     --gradient-subtle: linear-gradient(180deg, hsl(224, 20%, 6%) 0%, hsl(224, 18%, 9%) 100%);
     --gradient-hero: linear-gradient(135deg, hsl(217, 91%, 60%) 0%, hsl(266, 85%, 65%) 100%);
     --gradient-mesh: radial-gradient(at 0% 0%, hsl(217, 91%, 30%) 0px, transparent 50%),
                      radial-gradient(at 100% 0%, hsl(266, 85%, 35%) 0px, transparent 50%),
                      radial-gradient(at 100% 100%, hsl(266, 85%, 30%) 0px, transparent 50%),
                      radial-gradient(at 0% 100%, hsl(217, 91%, 35%) 0px, transparent 50%);
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 224 18% 8%;
     --sidebar-foreground: 210 15% 96%;
@@ -64,15 +112,14 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground antialiased;
-    background: hsl(224, 20%, 6%);
   }
 }
 
 @layer utilities {
   .grid-pattern {
     background-image: 
-      linear-gradient(hsl(224 15% 15% / 0.3) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(224 15% 15% / 0.3) 1px, transparent 1px);
+      linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
     background-size: 40px 40px;
   }
   
@@ -89,9 +136,9 @@ All colors MUST be HSL.
   }
   
   .glass-effect {
-    background: hsl(224 18% 9% / 0.5);
+    background: hsl(var(--card) / 0.5);
     backdrop-filter: blur(12px);
-    border: 1px solid hsl(210 85% 45% / 0.1);
+    border: 1px solid hsl(var(--primary) / 0.1);
   }
   
   .floating-card {

@@ -79,13 +79,11 @@ export const HowItWorks = () => {
             <Play className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Simple Setup</span>
           </div>
-          <h2 className="text-4xl md:text-6xl font-bold mb-6">
-            From Setup to <span className="gradient-text">Security</span>
-            <br />in Minutes
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            Go from Zero to <span className="gradient-text">Secure</span> in 10 Minutes
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Enterprise-grade security testing doesn't have to be complex. Our streamlined onboarding 
-            gets you protected in under 10 minutes.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Simple setup. Powerful protection. Get enterprise-grade security running fast.
           </p>
         </div>
         
@@ -101,30 +99,30 @@ export const HowItWorks = () => {
                 <CardContent className="p-0">
                   <div className="grid lg:grid-cols-12 gap-0">
                     {/* Left side - Number and Icon */}
-                    <div className="lg:col-span-3 p-8 lg:p-10 flex flex-col items-start justify-center border-b lg:border-b-0 lg:border-r border-border/50 relative overflow-hidden">
+                    <div className="lg:col-span-2 p-6 flex flex-col items-start justify-center border-b lg:border-b-0 lg:border-r border-border/50 relative overflow-hidden">
                       <div className={`absolute inset-0 bg-gradient-to-br ${step.color} opacity-5`} />
-                      <div className="relative z-10">
-                        <div className={`text-6xl font-bold bg-gradient-to-br ${step.color} bg-clip-text text-transparent mb-6`}>
+                      <div className="relative z-10 w-full">
+                        <div className={`text-4xl font-bold bg-gradient-to-br ${step.color} bg-clip-text text-transparent mb-3`}>
                           {step.number}
                         </div>
-                        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${step.color} opacity-10 flex items-center justify-center group-hover:opacity-20 transition-all duration-300 group-hover:scale-110`}>
-                          <step.icon className="w-8 h-8 text-primary" />
+                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${step.color} opacity-10 flex items-center justify-center group-hover:opacity-20 transition-all duration-300 group-hover:scale-110`}>
+                          <step.icon className="w-6 h-6 text-primary" />
                         </div>
                       </div>
                     </div>
                     
                     {/* Right side - Content */}
-                    <div className="lg:col-span-9 p-8 lg:p-10">
-                      <h3 className="text-2xl lg:text-3xl font-bold mb-4">{step.title}</h3>
-                      <p className="text-lg text-muted-foreground mb-6 leading-relaxed max-w-2xl">
+                    <div className="lg:col-span-10 p-6">
+                      <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                         {step.description}
                       </p>
                       
-                      <div className="grid sm:grid-cols-3 gap-4">
+                      <div className="grid sm:grid-cols-3 gap-3">
                         {step.details.map((detail, idx) => (
-                          <div key={idx} className="flex items-start gap-3 p-4 rounded-2xl bg-muted/30 border border-border/30 hover:border-primary/20 transition-colors">
-                            <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                            <span className="text-sm text-foreground/90">{detail}</span>
+                          <div key={idx} className="flex items-start gap-2 p-3 rounded-xl bg-muted/30 border border-border/30 hover:border-primary/20 transition-colors">
+                            <div className="w-1 h-1 rounded-full bg-primary mt-1.5 flex-shrink-0" />
+                            <span className="text-xs text-foreground/90">{detail}</span>
                           </div>
                         ))}
                       </div>
