@@ -4,38 +4,38 @@ import { Shield, Zap, Lock, Code, Activity, CheckCircle } from "lucide-react";
 const features = [
   {
     icon: Shield,
-    title: "Continuous Security Testing",
-    description: "24/7 automated testing of your application's UI and API endpoints to discover vulnerabilities before they become threats.",
+    title: "Proactive Scanning",
+    description: "Fetchbot continuously monitors your app, running security tests automatically with every code change—no manual triggers needed.",
     gradient: "from-blue-500/20 to-cyan-500/20"
   },
   {
-    icon: Zap,
-    title: "Instant Deployment",
-    description: "Verify domain ownership with a simple TXT record. Start testing in minutes, not hours.",
-    gradient: "from-yellow-500/20 to-orange-500/20"
-  },
-  {
-    icon: Lock,
-    title: "Secure by Design",
-    description: "Organization-level authentication with DNS verification ensures only authorized testing of your applications.",
-    gradient: "from-purple-500/20 to-pink-500/20"
-  },
-  {
     icon: Code,
-    title: "API & UI Testing",
-    description: "Comprehensive testing coverage including REST APIs, GraphQL endpoints, and full UI interaction flows.",
+    title: "Commit Tracking",
+    description: "Integrates with GitHub to track every commit, mapping vulnerabilities directly to code changes for instant context.",
     gradient: "from-green-500/20 to-emerald-500/20"
   },
   {
     icon: Activity,
-    title: "Real-time Monitoring",
-    description: "Get instant notifications when vulnerabilities are detected with detailed reports and remediation steps.",
-    gradient: "from-red-500/20 to-rose-500/20"
+    title: "Change Documentation",
+    description: "Automatically documents all code changes and their security impact, creating a complete audit trail for your team.",
+    gradient: "from-yellow-500/20 to-orange-500/20"
+  },
+  {
+    icon: Zap,
+    title: "Multiple Bot Strategies",
+    description: "Different bots simulate real threat actors, each with unique attack patterns to find vulnerabilities others miss.",
+    gradient: "from-purple-500/20 to-pink-500/20"
   },
   {
     icon: CheckCircle,
-    title: "Ethical & Compliant",
-    description: "All testing follows ethical hacking guidelines and compliance standards. Your data stays secure.",
+    title: "Comprehensive Reports",
+    description: "Get detailed findings from each bot with exact error locations in your codebase and actionable fix recommendations.",
+    gradient: "from-red-500/20 to-rose-500/20"
+  },
+  {
+    icon: Lock,
+    title: "Ethical & Secure",
+    description: "Your ethical hacker operates within strict guidelines, ensuring all testing is authorized and your data stays protected.",
     gradient: "from-indigo-500/20 to-violet-500/20"
   }
 ];
@@ -52,10 +52,10 @@ export const Features = () => {
       <div className="container px-4 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Why Choose <span className="gradient-text">Fetchbot</span>
+            Your Always-On <span className="gradient-text">Security Expert</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Enterprise-grade security testing made accessible for every team
+            Fetchbot works like a dedicated team member, constantly protecting your codebase
           </p>
         </div>
         

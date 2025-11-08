@@ -22,8 +22,7 @@ export const CTA = () => {
             
             <div className="relative space-y-8 text-center">
               <p className="text-2xl md:text-3xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-medium">
-                Join hundreds of companies protecting their applications with automated security testing. 
-                Start your free trial today—no credit card required.
+                Add an ethical hacker to your organization today. Fetchbot starts protecting your code with the first commit—no credit card required.
               </p>
               
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">

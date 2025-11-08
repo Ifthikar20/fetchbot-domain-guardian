@@ -4,26 +4,26 @@ const stats = [
   {
     icon: Shield,
     value: "10M+",
-    label: "Vulnerabilities Detected",
-    description: "Across all customer applications"
+    label: "Commits Scanned",
+    description: "Proactive security checks run"
   },
   {
     icon: Users,
     value: "500+",
-    label: "Enterprise Clients",
-    description: "Trust our security platform"
+    label: "Development Teams",
+    description: "With Fetchbot on their roster"
   },
   {
     icon: Clock,
     value: "24/7",
-    label: "Continuous Monitoring",
-    description: "Real-time threat detection"
+    label: "Active Monitoring",
+    description: "Your ethical hacker never sleeps"
   },
   {
     icon: Award,
     value: "99.9%",
-    label: "Detection Accuracy",
-    description: "Industry-leading precision"
+    label: "Code Coverage",
+    description: "Every change documented"
   }
 ];
 

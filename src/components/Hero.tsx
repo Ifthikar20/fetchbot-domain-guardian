@@ -29,14 +29,14 @@ export const Hero = () => {
           
           {/* Headline */}
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight animate-fade-in leading-tight" style={{ animationDelay: '0.1s' }}>
-            Proactive Cyber Defense
+            Your Ethical Hacker,
             <br />
-            <span className="gradient-text">For Modern Enterprises</span>
+            <span className="gradient-text">Now on Your Team</span>
           </h1>
           
           {/* Subheadline */}
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto animate-fade-in leading-relaxed" style={{ animationDelay: '0.2s' }}>
-            Continuous automated penetration testing that identifies and neutralizes vulnerabilities before they become breaches. Trusted by Fortune 500 companies.
+            Fetchbot proactively scans your app with every commit, tracks changes, and documents vulnerabilities—like having a 24/7 security expert on your payroll.
           </p>
           
           {/* CTA Buttons */}
