@@ -6,62 +6,50 @@ const steps = [
   {
     icon: Github,
     number: "01",
-    title: "Connect Your Repository",
-    description: "Link your GitHub, GitLab, or Bitbucket repository with one click. No code changes required.",
+    title: "Onboard Your App",
+    description: "Connect your application and integrate with GitHub. Quick setup gets you scanning in minutes.",
     details: [
-      "OAuth-based secure authentication",
-      "Auto-detect project structure",
-      "Support for monorepos and microservices"
+      "Connect via API or URL",
+      "GitHub integration",
+      "Automated configuration"
     ],
     color: "from-blue-500 to-cyan-500"
   },
   {
-    icon: FileText,
+    icon: Shield,
     number: "02",
-    title: "Verify Domain Ownership",
-    description: "Add a simple TXT record to your DNS to verify you own the domain being tested.",
+    title: "Select Scan Types",
+    description: "Choose from multiple security testing approaches tailored to your needs.",
     details: [
-      "One-time DNS verification",
-      "Copy-paste TXT record",
-      "Instant validation check"
+      "OWASP Top 10 scanning",
+      "API security testing",
+      "Authentication checks"
     ],
     color: "from-purple-500 to-pink-500"
   },
   {
-    icon: Shield,
+    icon: Zap,
     number: "03",
-    title: "Configure Testing Scope",
-    description: "Define which endpoints, pages, and user flows to test. Set up authentication and test credentials.",
+    title: "Fetchbot Mimics Threats",
+    description: "Different bots simulate real threat actors, each scanning your app with unique attack patterns.",
     details: [
-      "Visual flow builder",
-      "API endpoint discovery",
-      "Custom test scenarios"
+      "Multiple bot strategies",
+      "Real-world attack simulation",
+      "Continuous 24/7 testing"
     ],
     color: "from-indigo-500 to-purple-500"
   },
   {
-    icon: Zap,
+    icon: CheckCircle,
     number: "04",
-    title: "Automated Security Scanning",
-    description: "AI-powered testing begins immediately, simulating real-world attack vectors 24/7.",
+    title: "Get Comprehensive Reports",
+    description: "GitHub integration pinpoints exact error locations. Each bot delivers detailed findings.",
     details: [
-      "OWASP Top 10 coverage",
-      "SQL injection & XSS detection",
-      "Authentication bypass testing"
+      "Code-level vulnerability mapping",
+      "Multi-bot report aggregation",
+      "Actionable fix recommendations"
     ],
     color: "from-violet-500 to-purple-500"
-  },
-  {
-    icon: CheckCircle,
-    number: "05",
-    title: "Get Actionable Reports",
-    description: "Receive detailed vulnerability reports with severity ratings, reproduction steps, and fix recommendations.",
-    details: [
-      "Real-time Slack/email alerts",
-      "Proof-of-concept exploits",
-      "Remediation code examples"
-    ],
-    color: "from-blue-500 to-indigo-500"
   }
 ];
 
