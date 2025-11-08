@@ -55,8 +55,8 @@ export const Hero = () => {
           
           {/* Artistic dashboard preview */}
           <div className="relative mt-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            <div className="relative rounded-2xl overflow-hidden glass-effect p-1">
-              <div className="bg-card rounded-xl p-8">
+            <div className="relative rounded-3xl overflow-hidden glass-effect p-1 floating-card">
+              <div className="bg-card rounded-3xl p-8">
                 {/* Abstract dashboard representation */}
                 <div className="grid grid-cols-3 gap-4 mb-6">
                   <div className="h-24 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 animate-pulse" />

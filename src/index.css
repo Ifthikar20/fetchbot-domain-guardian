@@ -94,6 +94,16 @@ All colors MUST be HSL.
     border: 1px solid hsl(210 85% 45% / 0.1);
   }
   
+  .floating-card {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12), 0 0 1px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .floating-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2), 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+  
   @keyframes mesh-movement {
     0%, 100% {
       background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%;

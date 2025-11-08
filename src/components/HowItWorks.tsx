@@ -97,7 +97,7 @@ export const HowItWorks = () => {
                 <div className="hidden lg:block absolute left-[52px] top-32 w-0.5 h-24 bg-gradient-to-b from-primary/50 to-transparent" />
               )}
               
-              <Card className="overflow-hidden border-border/50 hover:border-primary/30 transition-all duration-500 rounded-3xl bg-card/30 backdrop-blur-sm">
+              <Card className="overflow-hidden border-border/50 hover:border-primary/30 transition-all duration-500 rounded-3xl bg-card/30 backdrop-blur-sm floating-card">
                 <CardContent className="p-0">
                   <div className="grid lg:grid-cols-12 gap-0">
                     {/* Left side - Number and Icon */}
