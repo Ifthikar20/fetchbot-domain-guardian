@@ -4,6 +4,33 @@ export type ScanType = 'full' | 'quick' | 'deep' | 'api' | 'web' | 'mobile';
 
 export type FindingSeverity = 'critical' | 'high' | 'medium' | 'low' | 'info';
 
+export interface FindingEvidence {
+  http_method?: string;
+  status_code?: number;
+  response_headers?: Record<string, string>;
+  missing_header?: string;
+  server?: string;
+  detection_method?: string;
+  tool_used?: string;
+  request_sent?: string;
+  curl_equivalent?: string;
+  vulnerable_parameter?: string;
+  payload_used?: string;
+  injection_point?: string;
+  sql_error_detected?: string;
+  database_type?: string;
+  injection_context?: string;
+  vulnerable_url?: string;
+}
+
+export interface FindingRemediation {
+  fix?: string;
+  example?: string;
+  implementation?: Record<string, string>;
+  additional_steps?: string[];
+  references?: string[];
+}
+
 export interface Finding {
   title: string;
   severity: FindingSeverity;
@@ -12,7 +39,11 @@ export interface Finding {
   discovered_by: string;
   url: string;
   payload?: string;
-  evidence?: string;
+  evidence?: FindingEvidence | string; // Can be object or string for backward compatibility
+  remediation?: FindingRemediation;
+  cvss_score?: number;
+  cwe?: string;
+  owasp_category?: string;
 }
 
 export interface Agent {
