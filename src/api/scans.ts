@@ -3,7 +3,7 @@ import type { Scan, CreateScanRequest, ScanListResponse, AgentGraph } from '@/ty
 
 export const scansApi = {
   // Get all scans for organization
-  getAll: async (organizationId: number, limit = 20, offset = 0) => {
+  getAll: async (organizationId: string, limit = 20, offset = 0) => {
     const response = await apiClient.get<ScanListResponse>('/scans', {
       params: { organization_id: organizationId, limit, offset }
     });
