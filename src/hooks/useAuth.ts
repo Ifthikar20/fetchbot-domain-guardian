@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { authApi } from '@/api/auth';
 import { useAuthStore } from '@/store/authStore';
 import { useNavigate } from 'react-router-dom';
@@ -54,15 +54,8 @@ export const useAuth = () => {
     navigate('/');
   };
 
-  const { data: currentUser } = useQuery({
-    queryKey: ['currentUser'],
-    queryFn: authApi.getCurrentUser,
-    enabled: isAuthenticated,
-    retry: false,
-  });
-
   return {
-    user: currentUser || user,
+    user, // Return user directly from store (already initialized from localStorage)
     isAuthenticated,
     login: loginMutation.mutate,
     register: registerMutation.mutate,
