@@ -56,9 +56,15 @@ export const useCreateScan = () => {
         description: `Scan started for ${scan.target}`,
       });
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.error('Scan creation error:', error);
+      console.log('Error response:', error.response);
+      console.log('Auth token:', localStorage.getItem('auth_token'));
+
+      const errorMessage = error.response?.data?.detail || error.message || 'Unknown error';
       toast({
         title: 'Failed to create scan',
+        description: errorMessage,
         variant: 'destructive',
       });
     },
