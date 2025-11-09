@@ -27,7 +27,7 @@ export interface Scan {
   job_id: string;
   status: ScanStatus;
   target: string;
-  created_at: string;
+  created_at?: string;
   completed_at?: string;
   execution_time_seconds?: number;
   findings?: Finding[];

@@ -113,10 +113,12 @@ export function ScanDetail({ scanId }: ScanDetailProps) {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div>
-              <p className="text-sm text-muted-foreground">Started</p>
-              <p className="font-medium">{formatDate(scan.created_at)}</p>
-            </div>
+            {scan.created_at && (
+              <div>
+                <p className="text-sm text-muted-foreground">Started</p>
+                <p className="font-medium">{formatDate(scan.created_at)}</p>
+              </div>
+            )}
             {scan.completed_at && (
               <div>
                 <p className="text-sm text-muted-foreground">Completed</p>
