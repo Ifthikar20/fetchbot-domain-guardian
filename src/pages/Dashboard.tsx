@@ -14,13 +14,27 @@ export default function Dashboard() {
   const [isGithubConnected, setIsGithubConnected] = useState(false);
   const { toast } = useToast();
   const attackApiIp = "203.0.113.42";
-  
-  const { scans } = useScans();
-  const { findings } = useFindings({ status: ['open'] });
-  
+
+  const { scans, isLoading: scansLoading } = useScans();
+  const { findings, isLoading: findingsLoading } = useFindings({ status: ['open'] });
+
+  console.log('Dashboard render:', { scans, findings, scansLoading, findingsLoading });
+
+  // Show loading state while data is being fetched
+  if (scansLoading || findingsLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   const runningScans = scans?.filter(s => s.status === 'running').length || 0;
   const totalFindings = findings?.length || 0;
-  
+
   const stats = [
     { title: "Active Targets", value: scans?.length.toString() || "0", icon: Target, color: "text-blue-500" },
     { title: "Running Scans", value: runningScans.toString(), icon: Activity, color: "text-green-500" },
