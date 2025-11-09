@@ -5,6 +5,7 @@ import { ScanStatus } from "./ScanStatus";
 import { ScanActions } from "./ScanActions";
 import { StatsCard } from "@/components/Dashboard/StatsCard";
 import { FindingCard } from "./FindingCard";
+import { ExecutionLogs } from "./ExecutionLogs";
 import { formatDate } from "@/utils/formatters";
 import { CheckCircle2, Loader2, Activity, Clock, Shield, AlertTriangle } from "lucide-react";
 
@@ -125,6 +126,11 @@ export function ScanDetail({ scanId }: ScanDetailProps) {
           <ScanActions scan={scan} />
         </CardContent>
       </Card>
+
+      {/* Live Execution Logs (show when running or just completed) */}
+      {(scan.status === 'running' || scan.status === 'completed') && (
+        <ExecutionLogs scanId={scanId} scanStatus={scan.status} />
+      )}
 
       {/* Findings Summary */}
       {(scan.total_findings || 0) > 0 && (
