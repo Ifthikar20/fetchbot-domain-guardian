@@ -4,28 +4,13 @@ import { useScan } from "@/hooks/useScans";
 import { ScanStatus } from "./ScanStatus";
 import { ScanActions } from "./ScanActions";
 import { StatsCard } from "@/components/Dashboard/StatsCard";
+import { FindingCard } from "./FindingCard";
 import { formatDate } from "@/utils/formatters";
-import { AlertTriangle, CheckCircle2, Info, Loader2, Activity, Clock, Shield } from "lucide-react";
+import { CheckCircle2, Loader2, Activity, Clock, Shield, AlertTriangle } from "lucide-react";
 
 interface ScanDetailProps {
   scanId: string;
 }
-
-const severityColors = {
-  critical: "bg-red-500",
-  high: "bg-orange-500",
-  medium: "bg-yellow-500",
-  low: "bg-blue-500",
-  info: "bg-gray-500",
-};
-
-const severityIcons = {
-  critical: AlertTriangle,
-  high: AlertTriangle,
-  medium: Info,
-  low: Info,
-  info: CheckCircle2,
-};
 
 export function ScanDetail({ scanId }: ScanDetailProps) {
   const { scan, isLoading } = useScan(scanId);
@@ -155,60 +140,17 @@ export function ScanDetail({ scanId }: ScanDetailProps) {
 
       {/* Detailed Findings */}
       {scan.findings && scan.findings.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Security Findings</CardTitle>
-            <CardDescription>{scan.findings.length} vulnerabilities discovered</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {scan.findings.map((finding, index) => {
-                const SeverityIcon = severityIcons[finding.severity];
-                return (
-                  <div key={index} className="border rounded-lg p-4 space-y-2">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-3">
-                        <SeverityIcon className={`h-5 w-5 mt-0.5 ${finding.severity === 'critical' || finding.severity === 'high' ? 'text-red-500' : 'text-yellow-500'}`} />
-                        <div>
-                          <h4 className="font-semibold">{finding.title}</h4>
-                          <p className="text-sm text-muted-foreground mt-1">{finding.description}</p>
-                        </div>
-                      </div>
-                      <Badge className={`${severityColors[finding.severity]} text-white`}>
-                        {finding.severity.toUpperCase()}
-                      </Badge>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4 mt-3 text-sm">
-                      <div>
-                        <span className="text-muted-foreground">Type:</span> {finding.type}
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Discovered by:</span> {finding.discovered_by}
-                      </div>
-                      <div className="col-span-2">
-                        <span className="text-muted-foreground">URL:</span>{" "}
-                        <code className="bg-muted px-1 py-0.5 rounded text-xs">{finding.url}</code>
-                      </div>
-                      {finding.payload && (
-                        <div className="col-span-2">
-                          <span className="text-muted-foreground">Payload:</span>
-                          <pre className="bg-muted p-2 rounded text-xs mt-1 overflow-x-auto">{finding.payload}</pre>
-                        </div>
-                      )}
-                      {finding.evidence && (
-                        <div className="col-span-2">
-                          <span className="text-muted-foreground">Evidence:</span>
-                          <pre className="bg-muted p-2 rounded text-xs mt-1 overflow-x-auto">{finding.evidence}</pre>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
+        <div>
+          <div className="mb-4">
+            <h3 className="text-xl font-bold text-gray-900">Security Findings</h3>
+            <p className="text-sm text-gray-600">{scan.findings.length} vulnerabilities discovered</p>
+          </div>
+          <div className="space-y-4">
+            {scan.findings.map((finding, index) => (
+              <FindingCard key={index} finding={finding} index={index} />
+            ))}
+          </div>
+        </div>
       )}
 
       {/* Agents Created */}
