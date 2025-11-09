@@ -1,5 +1,19 @@
 export type ScanStatus = 'running' | 'completed' | 'failed';
 
+export type ScanType = 'full' | 'quick' | 'deep' | 'api' | 'web' | 'mobile';
+
+export type FindingSeverity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'INFO';
+
+export interface Finding {
+  title: string;
+  severity: FindingSeverity;
+  type: string;
+  description: string;
+  discovered_by: string;
+  payload?: string;
+  evidence?: string;
+}
+
 export interface Agent {
   id: string;
   name: string;
@@ -15,7 +29,7 @@ export interface Scan {
   created_at: string;
   completed_at?: string;
   execution_time_seconds?: number;
-  findings?: any[];
+  findings?: Finding[];
   agents_created?: Agent[];
   total_findings?: number;
   critical_findings?: number;
@@ -42,4 +56,27 @@ export interface ScanSummary {
   created_at: string;
   total_findings?: number;
   critical_findings?: number;
+}
+
+export interface AgentGraphNode {
+  id: string;
+  name: string;
+  parent_id: string | null;
+  modules?: string[];
+  status: string;
+  findings_count?: number;
+}
+
+export interface AgentGraphEdge {
+  from: string;
+  to: string;
+  type: string;
+}
+
+export interface AgentGraph {
+  job_id: string;
+  graph: {
+    nodes: AgentGraphNode[];
+    edges: AgentGraphEdge[];
+  };
 }

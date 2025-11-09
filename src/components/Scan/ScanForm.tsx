@@ -2,22 +2,33 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useScans } from "@/hooks/useScans";
-import { SCAN_TYPES } from "@/utils/constants";
-import type { ScanType } from "@/types/scan";
+import { useCreateScan } from "@/hooks/useScans";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export function ScanForm() {
   const [target, setTarget] = useState("");
-  const [scanType, setScanType] = useState<ScanType>("full");
-  const { createScan, isCreating } = useScans();
+  const { mutate: createScan, isPending: isCreating } = useCreateScan();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (target.trim()) {
-      createScan({ target, type: scanType });
-      setTarget("");
+    if (target.trim() && user?.organization_id) {
+      createScan(
+        {
+          target: target.trim(),
+          organization_id: user.organization_id
+        },
+        {
+          onSuccess: (scan) => {
+            setTarget("");
+            // Navigate to scan detail page
+            navigate(`/dashboard/scans/${scan.job_id}`);
+          }
+        }
+      );
     }
   };
 
@@ -25,7 +36,9 @@ export function ScanForm() {
     <Card>
       <CardHeader>
         <CardTitle>New Scan</CardTitle>
-        <CardDescription>Configure and start a new security scan</CardDescription>
+        <CardDescription>
+          Start a dynamic security assessment. Our AI agents will automatically analyze your target and deploy specialized security testing modules.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -33,34 +46,18 @@ export function ScanForm() {
             <Label htmlFor="target">Target URL or IP</Label>
             <Input
               id="target"
-              placeholder="https://example.com or 192.168.1.1"
+              placeholder="https://example.com"
               value={target}
               onChange={(e) => setTarget(e.target.value)}
               required
             />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="scan-type">Scan Type</Label>
-            <Select value={scanType} onValueChange={(v) => setScanType(v as ScanType)}>
-              <SelectTrigger id="scan-type">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.entries(SCAN_TYPES).map(([key, { label, description }]) => (
-                  <SelectItem key={key} value={key}>
-                    <div>
-                      <div className="font-medium">{label}</div>
-                      <div className="text-xs text-muted-foreground">{description}</div>
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <p className="text-xs text-muted-foreground">
+              Enter a valid URL (e.g., https://example.com) or IP address. The system will dynamically create specialized agents based on what it discovers.
+            </p>
           </div>
 
           <Button type="submit" className="w-full" disabled={isCreating}>
-            {isCreating ? "Creating..." : "Start Scan"}
+            {isCreating ? "Starting Scan..." : "Start Dynamic Scan"}
           </Button>
         </form>
       </CardContent>
