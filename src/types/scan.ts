@@ -71,6 +71,7 @@ export interface Scan {
 
 export interface CreateScanRequest {
   target: string;
+  organization_id?: number;
 }
 
 export interface ScanListResponse {
