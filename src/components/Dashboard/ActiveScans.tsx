@@ -6,7 +6,7 @@ import { SCAN_STATUSES } from "@/utils/constants";
 
 export function ActiveScans() {
   const { scans, isLoading } = useScans();
-  const activeScans = scans?.filter(s => s.status === 'running') || [];
+  const activeScans = scans?.filter(s => s.status === 'running' || s.status === 'queued') || [];
 
   if (isLoading) {
     return (
@@ -47,7 +47,8 @@ export function ActiveScans() {
                 </Badge>
               </div>
               <p className="text-xs text-muted-foreground">
-                Running...
+                {scan.status === 'queued' ? 'Starting...' : 'Running...'}
+                {scan.execution_time_seconds && ` • ${Math.floor(scan.execution_time_seconds)}s elapsed`}
               </p>
             </div>
           ))

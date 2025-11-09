@@ -32,8 +32,8 @@ export const useScan = (jobId: string | undefined) => {
     queryFn: () => scansApi.getById(jobId!),
     enabled: !!jobId,
     refetchInterval: (data) => {
-      // Poll every 5 seconds if scan is running
-      return data?.status === 'running' ? 5000 : false;
+      // Poll every 3 seconds if scan is queued or running
+      return data?.status === 'queued' || data?.status === 'running' ? 3000 : false;
     },
   });
 

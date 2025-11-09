@@ -8,6 +8,7 @@ export const SCAN_TYPES = {
 } as const;
 
 export const SCAN_STATUSES = {
+  queued: { label: 'Queued', color: 'text-muted-foreground' },
   running: { label: 'Running', color: 'text-blue-500' },
   completed: { label: 'Completed', color: 'text-green-500' },
   failed: { label: 'Failed', color: 'text-red-500' },

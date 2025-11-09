@@ -1,8 +1,8 @@
-export type ScanStatus = 'running' | 'completed' | 'failed';
+export type ScanStatus = 'queued' | 'running' | 'completed' | 'failed';
 
 export type ScanType = 'full' | 'quick' | 'deep' | 'api' | 'web' | 'mobile';
 
-export type FindingSeverity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'INFO';
+export type FindingSeverity = 'critical' | 'high' | 'medium' | 'low' | 'info';
 
 export interface Finding {
   title: string;
@@ -10,6 +10,7 @@ export interface Finding {
   type: string;
   description: string;
   discovered_by: string;
+  url: string;
   payload?: string;
   evidence?: string;
 }
@@ -39,7 +40,6 @@ export interface Scan {
 
 export interface CreateScanRequest {
   target: string;
-  organization_id: number;
 }
 
 export interface ScanListResponse {
