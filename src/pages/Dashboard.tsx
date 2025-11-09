@@ -1,12 +1,14 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity, Shield, Target, AlertTriangle, Github, Copy } from "lucide-react";
-import { ExecutionLog } from "@/components/dashboard/ExecutionLog";
+import { Github, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { StatsCard } from "@/components/Dashboard/StatsCard";
+import { ActiveScans } from "@/components/Dashboard/ActiveScans";
+import { RecentFindings } from "@/components/Dashboard/RecentFindings";
+import { ExecutionLog } from "@/components/dashboard/ExecutionLog";
+import { Activity, Shield, Target, AlertTriangle } from "lucide-react";
 import { useScans } from "@/hooks/useScans";
 import { useFindings } from "@/hooks/useFindings";
-import { getSeverityBadgeColor } from "@/utils/severity";
 
 export default function Dashboard() {
   const [isGithubConnected, setIsGithubConnected] = useState(false);
@@ -75,15 +77,13 @@ export default function Dashboard() {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <Card key={stat.title}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-              <stat.icon className={`h-4 w-4 ${stat.color}`} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-            </CardContent>
-          </Card>
+          <StatsCard
+            key={stat.title}
+            title={stat.title}
+            value={stat.value}
+            icon={stat.icon}
+            color={stat.color}
+          />
         ))}
       </div>
 
@@ -91,34 +91,9 @@ export default function Dashboard() {
         <div className="lg:col-span-2">
           <ExecutionLog />
         </div>
-
-        <div className="lg:col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle>Critical Issues</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {findings && findings.length > 0 ? (
-                  findings.slice(0, 5).map((finding) => (
-                    <div key={finding.id} className="flex items-start justify-between border-b border-border pb-3 last:border-0">
-                      <div className="flex-1">
-                        <p className="font-medium text-sm">{finding.title}</p>
-                        <p className="text-xs text-muted-foreground">{finding.target}</p>
-                      </div>
-                      <span className={`text-xs px-2 py-1 rounded ${getSeverityBadgeColor(finding.severity)}`}>
-                        {finding.severity}
-                      </span>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-muted-foreground text-center py-4">
-                    No critical issues found
-                  </p>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+        <div className="lg:col-span-1 space-y-6">
+          <ActiveScans />
+          <RecentFindings />
         </div>
       </div>
     </div>

@@ -30,10 +30,13 @@ export const Navbar = () => {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Button variant="ghost" size="sm" asChild>
+              <Link to="/login">Sign In</Link>
+            </Button>
+            <Button variant="ghost" size="sm" asChild>
               <Link to="/dashboard">Dashboard</Link>
             </Button>
-            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
-              Get Started
+            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" asChild>
+              <Link to="/register">Get Started</Link>
             </Button>
           </div>
         </div>

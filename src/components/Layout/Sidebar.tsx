@@ -23,9 +23,9 @@ import {
 
 const mainItems = [
   { title: "Overview", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Targets", url: "/dashboard/targets", icon: Target },
   { title: "Scans", url: "/dashboard/scans", icon: Activity },
-  { title: "Vulnerabilities", url: "/dashboard/vulnerabilities", icon: Shield },
+  { title: "Findings", url: "/dashboard/findings", icon: Shield },
+  { title: "Targets", url: "/dashboard/targets", icon: Target },
 ];
 
 const secondaryItems = [

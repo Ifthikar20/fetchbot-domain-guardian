@@ -6,11 +6,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import DashboardLayout from "./layouts/DashboardLayout";
+import { DashboardLayout } from "./components/Layout/Layout";
 import Dashboard from "./pages/Dashboard";
 import Targets from "./pages/Targets";
-import Scans from "./pages/Scans";
-import Vulnerabilities from "./pages/Vulnerabilities";
+import NewScan from "./pages/NewScan";
+import ScanDetail from "./pages/ScanDetail";
+import Findings from "./pages/Findings";
+import Reports from "./pages/Reports";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const queryClient = new QueryClient();
 
@@ -23,10 +27,14 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
             <Route path="/dashboard/targets" element={<DashboardLayout><Targets /></DashboardLayout>} />
-            <Route path="/dashboard/scans" element={<DashboardLayout><Scans /></DashboardLayout>} />
-            <Route path="/dashboard/vulnerabilities" element={<DashboardLayout><Vulnerabilities /></DashboardLayout>} />
+            <Route path="/dashboard/scans" element={<DashboardLayout><NewScan /></DashboardLayout>} />
+            <Route path="/dashboard/scans/:id" element={<DashboardLayout><ScanDetail /></DashboardLayout>} />
+            <Route path="/dashboard/findings" element={<DashboardLayout><Findings /></DashboardLayout>} />
+            <Route path="/dashboard/reports" element={<DashboardLayout><Reports /></DashboardLayout>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
