@@ -5,10 +5,12 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCreateScan } from "@/hooks/useScans";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 export function ScanForm() {
   const [target, setTarget] = useState("");
   const { mutate: createScan, isPending: isCreating } = useCreateScan();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -16,7 +18,8 @@ export function ScanForm() {
     if (target.trim()) {
       createScan(
         {
-          target: target.trim()
+          target: target.trim(),
+          organization_id: user?.organization_id ? parseInt(user.organization_id) : undefined
         },
         {
           onSuccess: (scan) => {

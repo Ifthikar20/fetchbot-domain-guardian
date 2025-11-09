@@ -71,6 +71,7 @@ export interface Scan {
 
 export interface CreateScanRequest {
   target: string;
+  organization_id?: number;
 }
 
 export interface ScanListResponse {
@@ -110,4 +111,16 @@ export interface AgentGraph {
     nodes: AgentGraphNode[];
     edges: AgentGraphEdge[];
   };
+}
+
+export interface ExecutionLog {
+  timestamp: string;
+  agent: string;
+  action: string;
+  details: string;
+}
+
+export interface ExecutionLogsResponse {
+  job_id: string;
+  logs: ExecutionLog[];
 }
