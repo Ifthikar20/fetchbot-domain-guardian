@@ -1,6 +1,7 @@
 import { formatDistanceToNow, format } from 'date-fns';
 
-export const formatDate = (date: string | Date) => {
+export const formatDate = (date: string | Date | undefined) => {
+  if (!date) return 'N/A';
   return format(new Date(date), 'MMM dd, yyyy HH:mm');
 };
 

@@ -27,15 +27,26 @@ export const useScans = (limit = 20, offset = 0) => {
  * Hook to fetch a single scan by job ID with automatic polling
  */
 export const useScan = (jobId: string | undefined) => {
-  const { data: scan, isLoading } = useQuery({
+  const { data: scan, isLoading, error } = useQuery({
     queryKey: ['scan', jobId],
-    queryFn: () => scansApi.getById(jobId!),
+    queryFn: async () => {
+      console.log('Fetching scan with jobId:', jobId);
+      const result = await scansApi.getById(jobId!);
+      console.log('Scan API response:', result);
+      return result;
+    },
     enabled: !!jobId,
     refetchInterval: (data) => {
-      // Poll every 5 seconds if scan is running
-      return data?.status === 'running' ? 5000 : false;
+      // Poll every 3 seconds if scan is queued or running
+      return data?.status === 'queued' || data?.status === 'running' ? 3000 : false;
+    },
+    onError: (err: any) => {
+      console.error('Error fetching scan:', err);
+      console.error('Error response:', err.response);
     },
   });
+
+  console.log('useScan hook state:', { jobId, scan, isLoading, error });
 
   return { scan, isLoading };
 };
@@ -56,9 +67,15 @@ export const useCreateScan = () => {
         description: `Scan started for ${scan.target}`,
       });
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.error('Scan creation error:', error);
+      console.log('Error response:', error.response);
+      console.log('Auth token:', localStorage.getItem('auth_token'));
+
+      const errorMessage = error.response?.data?.detail || error.message || 'Unknown error';
       toast({
         title: 'Failed to create scan',
+        description: errorMessage,
         variant: 'destructive',
       });
     },

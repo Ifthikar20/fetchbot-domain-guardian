@@ -1,9 +1,9 @@
 import { apiClient } from './client';
-import type { Scan, CreateScanRequest, ScanListResponse } from '@/types/scan';
+import type { Scan, CreateScanRequest, ScanListResponse, AgentGraph } from '@/types/scan';
 
 export const scansApi = {
   // Get all scans for organization
-  getAll: async (organizationId: number, limit = 20, offset = 0) => {
+  getAll: async (organizationId: string, limit = 20, offset = 0) => {
     const response = await apiClient.get<ScanListResponse>('/scans', {
       params: { organization_id: organizationId, limit, offset }
     });
@@ -25,6 +25,12 @@ export const scansApi = {
   // Delete scan
   delete: async (jobId: string) => {
     const response = await apiClient.delete<{ message: string }>(`/scan/${jobId}`);
+    return response.data;
+  },
+
+  // Get agent hierarchy graph for a scan
+  getAgentGraph: async (jobId: string) => {
+    const response = await apiClient.get<AgentGraph>(`/scan/${jobId}/agent-graph`);
     return response.data;
   },
 };

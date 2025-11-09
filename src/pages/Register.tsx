@@ -8,14 +8,22 @@ import { Shield } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Register() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [organizationId, setOrganizationId] = useState("");
   const { register, isRegistering } = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    register({ name, email, password });
+    register({
+      username,
+      email,
+      password,
+      full_name: fullName,
+      organization_id: organizationId
+    });
   };
 
   return (
@@ -33,12 +41,22 @@ export default function Register() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="username">Username</Label>
               <Input
-                id="name"
+                id="username"
+                placeholder="johndoe"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="fullName">Full Name</Label>
+              <Input
+                id="fullName"
                 placeholder="John Doe"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
                 required
               />
             </div>
@@ -63,6 +81,19 @@ export default function Register() {
                 required
                 minLength={8}
               />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="organizationId">Organization ID</Label>
+              <Input
+                id="organizationId"
+                placeholder="Your organization ID"
+                value={organizationId}
+                onChange={(e) => setOrganizationId(e.target.value)}
+                required
+              />
+              <p className="text-xs text-muted-foreground">
+                Contact your administrator for your organization ID
+              </p>
             </div>
             <Button type="submit" className="w-full" disabled={isRegistering}>
               {isRegistering ? "Creating account..." : "Create Account"}

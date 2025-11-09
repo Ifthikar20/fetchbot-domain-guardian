@@ -4,11 +4,19 @@ import type { FindingFilters } from '@/types/finding';
 
 /**
  * Hook to fetch all findings with optional filters
+ * Note: /findings endpoint may not exist - findings are part of scan data
  */
 export const useFindings = (filters?: FindingFilters) => {
   const { data: findings, isLoading } = useQuery({
     queryKey: ['findings', filters],
     queryFn: () => findingsApi.getAll(filters),
+    retry: false,
+    // Gracefully handle missing /findings endpoint (findings are included in scan data)
+    onError: (error: any) => {
+      if (error?.response?.status === 404) {
+        console.log('Findings endpoint not available - findings are included in scan data');
+      }
+    },
   });
 
   return {

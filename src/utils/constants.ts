@@ -8,12 +8,10 @@ export const SCAN_TYPES = {
 } as const;
 
 export const SCAN_STATUSES = {
-  pending: { label: 'Pending', color: 'text-muted-foreground' },
+  queued: { label: 'Queued', color: 'text-muted-foreground' },
   running: { label: 'Running', color: 'text-blue-500' },
-  paused: { label: 'Paused', color: 'text-yellow-500' },
   completed: { label: 'Completed', color: 'text-green-500' },
   failed: { label: 'Failed', color: 'text-red-500' },
-  cancelled: { label: 'Cancelled', color: 'text-muted-foreground' },
 } as const;
 
 export const FINDING_STATUSES = {
