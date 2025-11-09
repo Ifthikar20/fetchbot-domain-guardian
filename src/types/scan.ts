@@ -112,3 +112,15 @@ export interface AgentGraph {
     edges: AgentGraphEdge[];
   };
 }
+
+export interface ExecutionLog {
+  timestamp: string;
+  agent: string;
+  action: string;
+  details: string;
+}
+
+export interface ExecutionLogsResponse {
+  job_id: string;
+  logs: ExecutionLog[];
+}

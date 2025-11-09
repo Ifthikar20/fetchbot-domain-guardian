@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import type { Scan, CreateScanRequest, ScanListResponse, AgentGraph } from '@/types/scan';
+import type { Scan, CreateScanRequest, ScanListResponse, AgentGraph, ExecutionLogsResponse } from '@/types/scan';
 
 export const scansApi = {
   // Get all scans for organization
@@ -31,6 +31,12 @@ export const scansApi = {
   // Get agent hierarchy graph for a scan
   getAgentGraph: async (jobId: string) => {
     const response = await apiClient.get<AgentGraph>(`/scan/${jobId}/agent-graph`);
+    return response.data;
+  },
+
+  // Get execution logs for a scan
+  getLogs: async (jobId: string) => {
+    const response = await apiClient.get<ExecutionLogsResponse>(`/scan/${jobId}/logs`);
     return response.data;
   },
 };

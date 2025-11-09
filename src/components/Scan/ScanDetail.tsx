@@ -1,10 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useScan } from "@/hooks/useScans";
+import { useScan, useScanLogs } from "@/hooks/useScans";
 import { ScanStatus } from "./ScanStatus";
 import { ScanActions } from "./ScanActions";
 import { StatsCard } from "@/components/Dashboard/StatsCard";
 import { FindingCard } from "./FindingCard";
+import { ExecutionLogs } from "./ExecutionLogs";
 import { formatDate } from "@/utils/formatters";
 import { CheckCircle2, Loader2, Activity, Clock, Shield, AlertTriangle } from "lucide-react";
 
@@ -14,6 +15,7 @@ interface ScanDetailProps {
 
 export function ScanDetail({ scanId }: ScanDetailProps) {
   const { scan, isLoading } = useScan(scanId);
+  const { logs, isLoading: isLoadingLogs } = useScanLogs(scanId, scan?.status);
 
   console.log('ScanDetail render:', { scanId, scan, isLoading });
 
@@ -125,6 +127,9 @@ export function ScanDetail({ scanId }: ScanDetailProps) {
           <ScanActions scan={scan} />
         </CardContent>
       </Card>
+
+      {/* Execution Logs */}
+      <ExecutionLogs logs={logs} isLoading={isLoadingLogs} />
 
       {/* Findings Summary */}
       {(scan.total_findings || 0) > 0 && (
