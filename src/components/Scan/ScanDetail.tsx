@@ -3,8 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { useScan } from "@/hooks/useScans";
 import { ScanStatus } from "./ScanStatus";
 import { ScanActions } from "./ScanActions";
+import { StatsCard } from "@/components/Dashboard/StatsCard";
 import { formatDate } from "@/utils/formatters";
-import { AlertTriangle, CheckCircle2, Info, Loader2 } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Info, Loader2, Activity, Clock, Shield } from "lucide-react";
 
 interface ScanDetailProps {
   scanId: string;
@@ -50,21 +51,61 @@ export function ScanDetail({ scanId }: ScanDetailProps) {
     );
   }
 
+  const stats = [
+    {
+      title: "Status",
+      value: scan.status.charAt(0).toUpperCase() + scan.status.slice(1),
+      icon: Activity,
+      color: scan.status === 'completed' ? "text-green-500" : scan.status === 'running' ? "text-blue-500" : "text-yellow-500"
+    },
+    {
+      title: "Total Findings",
+      value: (scan.total_findings || 0).toString(),
+      icon: AlertTriangle,
+      color: (scan.critical_findings || 0) > 0 ? "text-red-500" : "text-green-500"
+    },
+    {
+      title: "Critical",
+      value: (scan.critical_findings || 0).toString(),
+      icon: Shield,
+      color: "text-red-500"
+    },
+    {
+      title: "Duration",
+      value: scan.execution_time_seconds ? `${Math.floor(scan.execution_time_seconds)}s` : "0s",
+      icon: Clock,
+      color: "text-primary"
+    },
+  ];
+
   return (
     <div className="space-y-6">
+      {/* Stats Cards */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {stats.map((stat) => (
+          <StatsCard
+            key={stat.title}
+            title={stat.title}
+            value={stat.value}
+            icon={stat.icon}
+            color={stat.color}
+          />
+        ))}
+      </div>
+
       {/* Scan Overview Card */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>{scan.target}</CardTitle>
+              <CardTitle>Scan Overview</CardTitle>
               <CardDescription>Job ID: {scan.job_id}</CardDescription>
             </div>
             <ScanStatus status={scan.status} />
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div>
               <p className="text-sm text-muted-foreground">Started</p>
               <p className="font-medium">{formatDate(scan.created_at)}</p>
@@ -75,15 +116,9 @@ export function ScanDetail({ scanId }: ScanDetailProps) {
                 <p className="font-medium">{formatDate(scan.completed_at)}</p>
               </div>
             )}
-            {scan.execution_time_seconds !== undefined && (
-              <div>
-                <p className="text-sm text-muted-foreground">Duration</p>
-                <p className="font-medium">{Math.floor(scan.execution_time_seconds)}s</p>
-              </div>
-            )}
             <div>
-              <p className="text-sm text-muted-foreground">Total Findings</p>
-              <p className="font-medium">{scan.total_findings || 0}</p>
+              <p className="text-sm text-muted-foreground">Agents Deployed</p>
+              <p className="font-medium">{scan.agents_created?.length || 0}</p>
             </div>
           </div>
 
