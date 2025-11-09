@@ -4,18 +4,27 @@ import { ExecutionLog } from "@/components/dashboard/ExecutionLog";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-
-const stats = [
-  { title: "Active Targets", value: "12", icon: Target, color: "text-blue-500" },
-  { title: "Running Scans", value: "3", icon: Activity, color: "text-green-500" },
-  { title: "Vulnerabilities", value: "47", icon: AlertTriangle, color: "text-yellow-500" },
-  { title: "Protected Assets", value: "156", icon: Shield, color: "text-primary" },
-];
+import { useScans } from "@/hooks/useScans";
+import { useFindings } from "@/hooks/useFindings";
+import { getSeverityBadgeColor } from "@/utils/severity";
 
 export default function Dashboard() {
   const [isGithubConnected, setIsGithubConnected] = useState(false);
   const { toast } = useToast();
   const attackApiIp = "203.0.113.42";
+  
+  const { scans } = useScans();
+  const { findings } = useFindings({ status: ['open'] });
+  
+  const runningScans = scans?.filter(s => s.status === 'running').length || 0;
+  const totalFindings = findings?.length || 0;
+  
+  const stats = [
+    { title: "Active Targets", value: scans?.length.toString() || "0", icon: Target, color: "text-blue-500" },
+    { title: "Running Scans", value: runningScans.toString(), icon: Activity, color: "text-green-500" },
+    { title: "Vulnerabilities", value: totalFindings.toString(), icon: AlertTriangle, color: "text-yellow-500" },
+    { title: "Protected Assets", value: "156", icon: Shield, color: "text-primary" },
+  ];
 
   const handleGithubConnect = () => {
     setIsGithubConnected(true);
@@ -90,29 +99,23 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {[
-                  { name: "SQL Injection Risk", target: "api.example.com", severity: "High" },
-                  { name: "XSS Vulnerability", target: "app.example.com", severity: "Medium" },
-                  { name: "Weak Auth Token", target: "auth.example.com", severity: "High" },
-                  { name: "CORS Misconfiguration", target: "api.example.com", severity: "Medium" },
-                  { name: "Exposed API Keys", target: "cdn.example.com", severity: "Critical" }
-                ].map((issue, i) => (
-                  <div key={i} className="flex items-start justify-between border-b border-border pb-3 last:border-0">
-                    <div className="flex-1">
-                      <p className="font-medium text-sm">{issue.name}</p>
-                      <p className="text-xs text-muted-foreground">{issue.target}</p>
+                {findings && findings.length > 0 ? (
+                  findings.slice(0, 5).map((finding) => (
+                    <div key={finding.id} className="flex items-start justify-between border-b border-border pb-3 last:border-0">
+                      <div className="flex-1">
+                        <p className="font-medium text-sm">{finding.title}</p>
+                        <p className="text-xs text-muted-foreground">{finding.target}</p>
+                      </div>
+                      <span className={`text-xs px-2 py-1 rounded ${getSeverityBadgeColor(finding.severity)}`}>
+                        {finding.severity}
+                      </span>
                     </div>
-                    <span className={`text-xs px-2 py-1 rounded ${
-                      issue.severity === "Critical" 
-                        ? "bg-red-500/10 text-red-500"
-                        : issue.severity === "High"
-                        ? "bg-orange-500/10 text-orange-500"
-                        : "bg-yellow-500/10 text-yellow-500"
-                    }`}>
-                      {issue.severity}
-                    </span>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground text-center py-4">
+                    No critical issues found
+                  </p>
+                )}
               </div>
             </CardContent>
           </Card>
