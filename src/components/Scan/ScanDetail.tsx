@@ -46,6 +46,13 @@ export function ScanDetail({ scanId }: ScanDetailProps) {
       <Card>
         <CardContent className="p-8 text-center">
           <p className="text-muted-foreground">Scan not found</p>
+          <div className="mt-4 p-4 bg-muted rounded text-left text-xs">
+            <p><strong>Debug Info:</strong></p>
+            <p>Scan ID: {scanId}</p>
+            <p>Is Loading: {isLoading.toString()}</p>
+            <p>Scan Data: {scan ? 'exists' : 'null/undefined'}</p>
+            <p className="mt-2 text-red-500">Check browser console for more details</p>
+          </div>
         </CardContent>
       </Card>
     );
