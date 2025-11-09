@@ -1,38 +1,30 @@
 import { apiClient } from './client';
-import type { Scan, CreateScanData } from '@/types/scan';
+import type { Scan, CreateScanRequest, ScanListResponse } from '@/types/scan';
 
 export const scansApi = {
-  getAll: async () => {
-    const response = await apiClient.get<Scan[]>('/scans');
+  // Get all scans for organization
+  getAll: async (organizationId: number, limit = 20, offset = 0) => {
+    const response = await apiClient.get<ScanListResponse>('/scans', {
+      params: { organization_id: organizationId, limit, offset }
+    });
     return response.data;
   },
 
-  getById: async (id: string) => {
-    const response = await apiClient.get<Scan>(`/scans/${id}`);
+  // Get scan by job ID
+  getById: async (jobId: string) => {
+    const response = await apiClient.get<Scan>(`/scan/${jobId}`);
     return response.data;
   },
 
-  create: async (data: CreateScanData) => {
-    const response = await apiClient.post<Scan>('/scans', data);
+  // Create new scan
+  create: async (data: CreateScanRequest) => {
+    const response = await apiClient.post<Scan>('/scan', data);
     return response.data;
   },
 
-  pause: async (id: string) => {
-    const response = await apiClient.post<Scan>(`/scans/${id}/pause`);
+  // Delete scan
+  delete: async (jobId: string) => {
+    const response = await apiClient.delete<{ message: string }>(`/scan/${jobId}`);
     return response.data;
-  },
-
-  resume: async (id: string) => {
-    const response = await apiClient.post<Scan>(`/scans/${id}/resume`);
-    return response.data;
-  },
-
-  cancel: async (id: string) => {
-    const response = await apiClient.post<Scan>(`/scans/${id}/cancel`);
-    return response.data;
-  },
-
-  delete: async (id: string) => {
-    await apiClient.delete(`/scans/${id}`);
   },
 };

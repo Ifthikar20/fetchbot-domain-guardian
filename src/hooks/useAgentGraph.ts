@@ -1,24 +1,41 @@
 import { useQuery } from '@tanstack/react-query';
 import { agentsApi } from '@/api/agents';
 
-export const useAgentGraph = (scanId: string) => {
-  const { data: graph, isLoading } = useQuery({
-    queryKey: ['agentGraph', scanId],
-    queryFn: () => agentsApi.getGraph(scanId),
-    enabled: !!scanId,
-    refetchInterval: 5000, // Refetch every 5 seconds for real-time updates
+/**
+ * Hook to fetch agent graph for visualization
+ */
+export const useAgentGraph = (jobId: string | undefined) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['agent-graph', jobId],
+    queryFn: () => agentsApi.getGraph(jobId!),
+    enabled: !!jobId,
+    refetchInterval: 10000, // Refetch every 10 seconds for real-time updates
   });
 
-  return { graph, isLoading };
+  return {
+    graph: data?.graph,
+    hierarchy: data?.hierarchy,
+    isLoading,
+  };
 };
 
-export const useAgentExecutions = (scanId: string) => {
-  const { data: executions, isLoading } = useQuery({
-    queryKey: ['agentExecutions', scanId],
-    queryFn: () => agentsApi.getExecutions(scanId),
-    enabled: !!scanId,
-    refetchInterval: 3000,
+/**
+ * Hook to fetch agent status information
+ */
+export const useAgents = (jobId: string | undefined) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['agents', jobId],
+    queryFn: () => agentsApi.getAgents(jobId!),
+    enabled: !!jobId,
+    refetchInterval: 5000, // Refetch every 5 seconds
   });
 
-  return { executions, isLoading };
+  return {
+    agents: data?.agents || [],
+    totalAgents: data?.total_agents || 0,
+    running: data?.running || 0,
+    completed: data?.completed || 0,
+    failed: data?.failed || 0,
+    isLoading,
+  };
 };

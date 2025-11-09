@@ -1,14 +1,16 @@
 import { apiClient } from './client';
-import type { AgentGraph, AgentExecution } from '@/types/agent';
+import type { AgentGraphResponse, AgentsResponse } from '@/types/agent';
 
 export const agentsApi = {
-  getGraph: async (scanId: string) => {
-    const response = await apiClient.get<AgentGraph>(`/scans/${scanId}/agent-graph`);
+  // Get agent graph for visualization
+  getGraph: async (jobId: string) => {
+    const response = await apiClient.get<AgentGraphResponse>(`/scan/${jobId}/agent-graph`);
     return response.data;
   },
 
-  getExecutions: async (scanId: string) => {
-    const response = await apiClient.get<AgentExecution[]>(`/scans/${scanId}/executions`);
+  // Get agent status and info
+  getAgents: async (jobId: string) => {
+    const response = await apiClient.get<AgentsResponse>(`/scan/${jobId}/agents`);
     return response.data;
   },
 };

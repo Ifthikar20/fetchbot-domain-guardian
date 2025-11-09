@@ -1,46 +1,37 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { findingsApi } from '@/api/findings';
-import type { FindingFilters } from '@/types/finding';
 
-export const useFindings = (filters?: FindingFilters) => {
-  const { data: findings, isLoading } = useQuery({
-    queryKey: ['findings', filters],
-    queryFn: () => findingsApi.getAll(filters),
-  });
-
-  return { findings, isLoading };
-};
-
-export const useFinding = (id: string) => {
-  const { data: finding, isLoading } = useQuery({
-    queryKey: ['finding', id],
-    queryFn: () => findingsApi.getById(id),
-    enabled: !!id,
-  });
-
-  return { finding, isLoading };
-};
-
-export const useScanFindings = (scanId: string) => {
-  const { data: findings, isLoading } = useQuery({
-    queryKey: ['scanFindings', scanId],
-    queryFn: () => findingsApi.getByScanId(scanId),
-    enabled: !!scanId,
-  });
-
-  return { findings, isLoading };
-};
-
-export const useUpdateFinding = () => {
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    mutationFn: ({ id, status }: { id: string; status: string }) => 
-      findingsApi.updateStatus(id, status),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['findings'] });
+/**
+ * Hook to fetch findings for a specific scan
+ */
+export const useScanFindings = (jobId: string | undefined) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['findings', jobId],
+    queryFn: () => findingsApi.getByScanId(jobId!),
+    enabled: !!jobId,
+    refetchInterval: (data) => {
+      // Poll every 10 seconds if there are findings
+      return data && data.findings.length > 0 ? 10000 : false;
     },
   });
 
-  return mutation;
+  return {
+    findings: data?.findings || [],
+    total: data?.total || 0,
+    bySeverity: data?.by_severity,
+    isLoading,
+  };
+};
+
+/**
+ * Hook to fetch a single finding detail
+ */
+export const useFinding = (findingId: number | undefined) => {
+  const { data: finding, isLoading } = useQuery({
+    queryKey: ['finding', findingId],
+    queryFn: () => findingsApi.getById(findingId!),
+    enabled: !!findingId,
+  });
+
+  return { finding, isLoading };
 };

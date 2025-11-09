@@ -1,31 +1,59 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { scansApi } from '@/api/scans';
-import { useScanStore } from '@/store/scanStore';
 import { useToast } from '@/hooks/use-toast';
-import type { CreateScanData } from '@/types/scan';
+import { useAuth } from './useAuth';
+import type { CreateScanRequest } from '@/types/scan';
 
-export const useScans = () => {
-  const queryClient = useQueryClient();
-  const { setScans, addScan, updateScan } = useScanStore();
-  const { toast } = useToast();
+/**
+ * Hook to fetch all scans for the current organization
+ */
+export const useScans = (limit = 20, offset = 0) => {
+  const { user } = useAuth();
 
-  const { data: scans, isLoading } = useQuery({
-    queryKey: ['scans'],
-    queryFn: async () => {
-      const data = await scansApi.getAll();
-      setScans(data);
-      return data;
+  const { data, isLoading } = useQuery({
+    queryKey: ['scans', user?.organization_id, limit, offset],
+    queryFn: () => scansApi.getAll(user!.organization_id, limit, offset),
+    enabled: !!user?.organization_id,
+  });
+
+  return {
+    scans: data?.scans || [],
+    total: data?.total || 0,
+    isLoading,
+  };
+};
+
+/**
+ * Hook to fetch a single scan by job ID with automatic polling
+ */
+export const useScan = (jobId: string | undefined) => {
+  const { data: scan, isLoading } = useQuery({
+    queryKey: ['scan', jobId],
+    queryFn: () => scansApi.getById(jobId!),
+    enabled: !!jobId,
+    refetchInterval: (data) => {
+      // Poll every 5 seconds if scan is running
+      return data?.status === 'running' ? 5000 : false;
     },
   });
 
-  const createScanMutation = useMutation({
-    mutationFn: (data: CreateScanData) => scansApi.create(data),
+  return { scan, isLoading };
+};
+
+/**
+ * Hook to create a new scan
+ */
+export const useCreateScan = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: (data: CreateScanRequest) => scansApi.create(data),
     onSuccess: (scan) => {
-      addScan(scan);
       queryClient.invalidateQueries({ queryKey: ['scans'] });
       toast({
         title: 'Scan created',
-        description: 'Your scan has been started',
+        description: `Scan started for ${scan.target}`,
       });
     },
     onError: () => {
@@ -35,39 +63,29 @@ export const useScans = () => {
       });
     },
   });
-
-  const pauseScanMutation = useMutation({
-    mutationFn: (id: string) => scansApi.pause(id),
-    onSuccess: (scan) => {
-      updateScan(scan.id, scan);
-      queryClient.invalidateQueries({ queryKey: ['scans'] });
-    },
-  });
-
-  const resumeScanMutation = useMutation({
-    mutationFn: (id: string) => scansApi.resume(id),
-    onSuccess: (scan) => {
-      updateScan(scan.id, scan);
-      queryClient.invalidateQueries({ queryKey: ['scans'] });
-    },
-  });
-
-  return {
-    scans,
-    isLoading,
-    createScan: createScanMutation.mutate,
-    pauseScan: pauseScanMutation.mutate,
-    resumeScan: resumeScanMutation.mutate,
-    isCreating: createScanMutation.isPending,
-  };
 };
 
-export const useScan = (id: string) => {
-  const { data: scan, isLoading } = useQuery({
-    queryKey: ['scan', id],
-    queryFn: () => scansApi.getById(id),
-    enabled: !!id,
-  });
+/**
+ * Hook to delete a scan
+ */
+export const useDeleteScan = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-  return { scan, isLoading };
+  return useMutation({
+    mutationFn: (jobId: string) => scansApi.delete(jobId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['scans'] });
+      toast({
+        title: 'Scan deleted',
+        description: 'The scan has been deleted successfully',
+      });
+    },
+    onError: () => {
+      toast({
+        title: 'Failed to delete scan',
+        variant: 'destructive',
+      });
+    },
+  });
 };
