@@ -1,22 +1,28 @@
 export interface User {
-  id: number;
+  id: string;
+  username: string;
   email: string;
-  organization_id: number;
+  full_name: string;
+  organization_id: string;
 }
 
 export interface LoginCredentials {
-  email: string;
+  username: string;
   password: string;
 }
 
 export interface RegisterData {
+  username: string;
   email: string;
   password: string;
-  organization_name: string;
+  full_name: string;
+  organization_id: string;
 }
 
 export interface AuthResponse {
   access_token: string;
   token_type: string;
-  user: User;
+  user_id: string;
+  username: string;
+  organization_id: string;
 }
