@@ -1,5 +1,7 @@
 export type FindingSeverity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'INFO';
 
+export type FindingStatus = 'open' | 'in_progress' | 'resolved' | 'false_positive';
+
 export type FindingType =
   | 'INFORMATION_DISCLOSURE'
   | 'SQL_INJECTION'
@@ -14,6 +16,7 @@ export interface Finding {
   id: number;
   title: string;
   severity: FindingSeverity;
+  status: FindingStatus;
   type: FindingType;
   description: string;
   affected_url: string;
@@ -45,6 +48,7 @@ export interface FindingsResponse {
 
 export interface FindingFilters {
   severity?: FindingSeverity[];
+  status?: FindingStatus[];
   type?: FindingType[];
   job_id?: string;
 }

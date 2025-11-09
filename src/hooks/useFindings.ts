@@ -1,5 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 import { findingsApi } from '@/api/findings';
+import type { FindingFilters } from '@/types/finding';
+
+/**
+ * Hook to fetch all findings with optional filters
+ */
+export const useFindings = (filters?: FindingFilters) => {
+  const { data: findings, isLoading } = useQuery({
+    queryKey: ['findings', filters],
+    queryFn: () => findingsApi.getAll(filters),
+  });
+
+  return {
+    findings: findings || [],
+    isLoading,
+  };
+};
 
 /**
  * Hook to fetch findings for a specific scan
