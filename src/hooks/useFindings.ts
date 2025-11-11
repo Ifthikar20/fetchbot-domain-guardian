@@ -28,14 +28,17 @@ export const useFindings = (filters?: FindingFilters) => {
 /**
  * Hook to fetch findings for a specific scan
  */
-export const useScanFindings = (jobId: string | undefined) => {
+export const useScanFindings = (jobId: string | undefined, scanStatus?: string) => {
   const { data, isLoading } = useQuery({
     queryKey: ['findings', jobId],
     queryFn: () => findingsApi.getByScanId(jobId!),
     enabled: !!jobId,
     refetchInterval: (data) => {
-      // Poll every 10 seconds if there are findings
-      return data && data.findings.length > 0 ? 10000 : false;
+      // Poll every 3 seconds during active scans (running/queued)
+      // Stop polling when scan completes
+      return scanStatus === 'running' || scanStatus === 'queued'
+        ? 3000  // Poll every 3 seconds during scan
+        : false; // Stop when complete
     },
   });
 

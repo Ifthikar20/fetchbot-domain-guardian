@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useScan } from "@/hooks/useScans";
+import { useScan, useScanLogs } from "@/hooks/useScans";
+import { useScanFindings } from "@/hooks/useFindings";
 import { ScanStatus } from "./ScanStatus";
 import { ScanActions } from "./ScanActions";
 import { StatsCard } from "@/components/Dashboard/StatsCard";
@@ -15,6 +16,14 @@ interface ScanDetailProps {
 
 export function ScanDetail({ scanId }: ScanDetailProps) {
   const { scan, isLoading } = useScan(scanId);
+  const { logs, isLoading: isLoadingLogs } = useScanLogs(scanId, scan?.status);
+  // Pass scan status to findings hook for real-time polling during active scans
+  const {
+    findings,
+    total,
+    bySeverity,
+    isLoading: isLoadingFindings
+  } = useScanFindings(scanId, scan?.status);
 
   console.log('ScanDetail render:', { scanId, scan, isLoading });
 
@@ -44,6 +53,12 @@ export function ScanDetail({ scanId }: ScanDetailProps) {
     );
   }
 
+  // Use real-time findings data from hook instead of scan object
+  const criticalCount = bySeverity?.critical || 0;
+  const highCount = bySeverity?.high || 0;
+  const mediumCount = bySeverity?.medium || 0;
+  const lowCount = bySeverity?.low || 0;
+
   const stats = [
     {
       title: "Status",
@@ -53,13 +68,13 @@ export function ScanDetail({ scanId }: ScanDetailProps) {
     },
     {
       title: "Total Findings",
-      value: (scan.total_findings || 0).toString(),
+      value: total.toString(),
       icon: AlertTriangle,
-      color: (scan.critical_findings || 0) > 0 ? "text-red-500" : "text-green-500"
+      color: criticalCount > 0 ? "text-red-500" : "text-green-500"
     },
     {
       title: "Critical",
-      value: (scan.critical_findings || 0).toString(),
+      value: criticalCount.toString(),
       icon: Shield,
       color: "text-red-500"
     },
@@ -127,37 +142,68 @@ export function ScanDetail({ scanId }: ScanDetailProps) {
         </CardContent>
       </Card>
 
-      {/* Live Execution Logs (show when running or just completed) */}
-      {(scan.status === 'running' || scan.status === 'completed') && (
-        <ExecutionLogs scanId={scanId} scanStatus={scan.status} />
-      )}
+      {/* Execution Logs */}
+      <ExecutionLogs logs={logs} isLoading={isLoadingLogs} />
 
       {/* Findings Summary */}
-      {(scan.total_findings || 0) > 0 && (
+      {total > 0 && (
         <Card>
           <CardHeader>
             <CardTitle>Findings Summary</CardTitle>
-            <CardDescription>
-              {scan.critical_findings || 0} critical, {scan.high_findings || 0} high severity issues found
-            </CardDescription>
           </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold">{total}</div>
+                <div className="text-sm text-muted-foreground">Total</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-red-600">{criticalCount}</div>
+                <div className="text-sm text-muted-foreground">Critical</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-orange-600">{highCount}</div>
+                <div className="text-sm text-muted-foreground">High</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-yellow-600">{mediumCount}</div>
+                <div className="text-sm text-muted-foreground">Medium</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600">{lowCount}</div>
+                <div className="text-sm text-muted-foreground">Low</div>
+              </div>
+            </div>
+          </CardContent>
         </Card>
       )}
 
       {/* Detailed Findings */}
-      {scan.findings && scan.findings.length > 0 && (
-        <div>
-          <div className="mb-4">
-            <h3 className="text-xl font-bold text-gray-900">Security Findings</h3>
-            <p className="text-sm text-gray-600">{scan.findings.length} vulnerabilities discovered</p>
-          </div>
-          <div className="space-y-4">
-            {scan.findings.map((finding, index) => (
-              <FindingCard key={index} finding={finding} index={index} />
-            ))}
-          </div>
-        </div>
-      )}
+      <Card>
+        <CardHeader>
+          <CardTitle>Security Findings ({findings.length})</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {isLoadingFindings ? (
+            <div className="text-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground mx-auto mb-2" />
+              <p className="text-muted-foreground">Loading findings...</p>
+            </div>
+          ) : findings.length === 0 ? (
+            <div className="text-center text-muted-foreground py-8">
+              {scan?.status === 'running' || scan?.status === 'queued'
+                ? '🔍 Scanning... Findings will appear here as they are discovered'
+                : 'No security findings detected'}
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {findings.map((finding, index) => (
+                <FindingCard key={index} finding={finding} index={index} />
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Agents Created */}
       {scan.agents_created && scan.agents_created.length > 0 && (
@@ -191,16 +237,6 @@ export function ScanDetail({ scanId }: ScanDetailProps) {
         </Card>
       )}
 
-      {/* No findings message for completed scans */}
-      {scan.status === 'completed' && (!scan.findings || scan.findings.length === 0) && (
-        <Card>
-          <CardContent className="p-8 text-center">
-            <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto mb-2" />
-            <p className="font-medium">No vulnerabilities found</p>
-            <p className="text-sm text-muted-foreground">This target passed all security checks</p>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 }

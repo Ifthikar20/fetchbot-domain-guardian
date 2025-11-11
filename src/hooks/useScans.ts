@@ -106,3 +106,23 @@ export const useDeleteScan = () => {
     },
   });
 };
+
+/**
+ * Hook to fetch execution logs for a scan with automatic polling
+ */
+export const useScanLogs = (jobId: string | undefined, scanStatus?: string) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['scan-logs', jobId],
+    queryFn: () => scansApi.getLogs(jobId!),
+    enabled: !!jobId,
+    refetchInterval: (data) => {
+      // Poll every 2 seconds if scan is queued or running
+      return scanStatus === 'queued' || scanStatus === 'running' ? 2000 : false;
+    },
+  });
+
+  return {
+    logs: data?.logs || [],
+    isLoading,
+  };
+};

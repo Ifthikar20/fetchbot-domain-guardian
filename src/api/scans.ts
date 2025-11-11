@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import type { Scan, CreateScanRequest, ScanListResponse, AgentGraph, ScanLogsResponse } from '@/types/scan';
+import type { Scan, CreateScanRequest, ScanListResponse, AgentGraph, ExecutionLogsResponse } from '@/types/scan';
 
 export const scansApi = {
   // Get all scans for organization
@@ -18,7 +18,7 @@ export const scansApi = {
 
   // Create new scan
   create: async (data: CreateScanRequest) => {
-    const response = await apiClient.post<Scan>('/scan', data);
+    const response = await apiClient.post<Scan>('/scans/start', data);
     return response.data;
   },
 
@@ -36,7 +36,7 @@ export const scansApi = {
 
   // Get execution logs for a scan
   getLogs: async (jobId: string) => {
-    const response = await apiClient.get<ScanLogsResponse>(`/scan/${jobId}/logs`);
+    const response = await apiClient.get<ExecutionLogsResponse>(`/scan/${jobId}/logs`);
     return response.data;
   },
 };
