@@ -3,7 +3,7 @@ import type { User, LoginCredentials, RegisterData, AuthResponse } from '@/types
 
 export const authApi = {
   login: async (credentials: LoginCredentials) => {
-    const response = await apiClient.post<AuthResponse>('/api/login', credentials);
+    const response = await apiClient.post<AuthResponse>('/auth/login', credentials);
     const { access_token, user_id, username, organization_id } = response.data;
 
     // Store token in localStorage
@@ -24,7 +24,7 @@ export const authApi = {
   },
 
   register: async (data: RegisterData) => {
-    const response = await apiClient.post<AuthResponse>('/api/register', data);
+    const response = await apiClient.post<AuthResponse>('/auth/register', data);
     const { access_token, user_id, username, organization_id } = response.data;
 
     // Store token in localStorage
