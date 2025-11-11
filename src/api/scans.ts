@@ -18,7 +18,7 @@ export const scansApi = {
 
   // Create new scan
   create: async (data: CreateScanRequest) => {
-    const response = await apiClient.post<Scan>('/scan', data);
+    const response = await apiClient.post<Scan>('/scans/start', data);
     return response.data;
   },
 

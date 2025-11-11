@@ -1,7 +1,19 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+// Auth service runs on port 8000
+const AUTH_BASE_URL = import.meta.env.VITE_AUTH_BASE_URL || 'http://localhost:8000';
+// Orchestrator/scan service runs on port 8001
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
 
+// Client for authentication endpoints
+export const authClient = axios.create({
+  baseURL: AUTH_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Client for scan/orchestrator endpoints
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -9,7 +21,7 @@ export const apiClient = axios.create({
   },
 });
 
-// Request interceptor to add auth token
+// Request interceptor to add auth token to API requests
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('auth_token');
@@ -25,6 +37,18 @@ apiClient.interceptors.request.use(
 
 // Response interceptor for error handling
 apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('auth_token');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+// Also add interceptor to auth client for consistency
+authClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
